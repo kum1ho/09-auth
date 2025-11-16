@@ -10,9 +10,7 @@ interface AuthProviderProps {
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const setUser = useAuthStore((state) => state.setUser)
-  const clearisAuthenticated = useAuthStore(
-    (state) => state.clearisAuthenticated,
-  )
+  const clearIsAuthenticated = useAuthStore((state) => state.clearIsAuthenticated)
   useEffect(() => {
     const fetchUser = async () => {
       const isAuthenticated = await checkSession()
@@ -22,13 +20,13 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
           setUser(user)
         }
       } else {
-        clearisAuthenticated()
+        clearIsAuthenticated()
       }
     }
 
     fetchUser()
-  }, [setUser, clearisAuthenticated])
-  return children
+  }, [setUser, clearIsAuthenticated])
+  return <>{children}</>
 }
 
 export default AuthProvider

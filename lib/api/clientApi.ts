@@ -86,7 +86,6 @@ export const getMe = async () => {
 }
 
 interface UserToUpdate {
-  email?: string
   username?: string
 }
 export const updateUser = async (updatedUser: UserToUpdate) => {

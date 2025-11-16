@@ -4,12 +4,14 @@ import { User } from '@/types/user'
 import { Note } from '@/types/note'
 
 export interface FetchServerNotesParams {
-  params: { page: number; search?: string; tag?: string; perPage: number }
-  headers: { Cookie: string }
+  page?: number
+  perPage?: number
+  search?: string
+  tag?: string
 }
 
 export interface FetchServerNoteResp {
-  note: Note[]
+  notes: Note[]
   totalPages: number
 }
 
@@ -18,21 +20,26 @@ export async function fetchNotes(
   searchQuery?: string,
   tag?: string,
 ): Promise<FetchServerNoteResp> {
-  const cookieStore = cookies()
-  const params: FetchServerNotesParams = {
-    params: { page, perPage: 12 },
-    headers: { Cookie: cookieStore.toString() },
+  const cookieStore = await cookies()
+
+  const paramsObj: FetchServerNotesParams = {
+    page,
+    perPage: 12,
   }
 
-  if (searchQuery) params.params.search = searchQuery
-  if (tag) params.params.tag = tag
+  if (searchQuery) paramsObj.search = searchQuery
+  if (tag) paramsObj.tag = tag
 
-  const res = await nextServer.get<FetchServerNoteResp>('/notes', { params })
+  const res = await nextServer.get<FetchServerNoteResp>('/notes', {
+    params: paramsObj,
+    headers: { Cookie: cookieStore.toString() },
+  })
+
   return res.data
 }
 export const fetchNoteById = async (id: string): Promise<Note> => {
   const cookieStore = await cookies()
-  const response = await nextServer.get<Note>(`notes/${id}`, {
+  const response = await nextServer.get<Note>(`/notes/${id}`, {
     headers: { Cookie: cookieStore.toString() },
   })
 

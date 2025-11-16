@@ -9,11 +9,11 @@ import { logout } from '@/lib/api/clientApi'
 import { useRouter } from 'next/navigation'
 
 export default function AuthNavigation() {
-  const { user, isAuthenticated, clearisAuthenticated } = useAuthStore()
+  const { user, isAuthenticated, clearIsAuthenticated } = useAuthStore()
   const router = useRouter()
   const handleLogout = async () => {
     await logout()
-    clearisAuthenticated()
+    clearIsAuthenticated()
     router.push('/sign-in')
   }
 
