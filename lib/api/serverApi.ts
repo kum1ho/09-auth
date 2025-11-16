@@ -3,8 +3,17 @@ import axios from 'axios'
 import { User } from '@/types/user'
 import { Note } from '@/types/note'
 
+const getBaseURL = () => {
+  if (process.env.NEXT_PUBLIC_VERCEL_URL) {
+    return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api`
+  }
+  return process.env.NEXT_PUBLIC_API_URL 
+    ? `${process.env.NEXT_PUBLIC_API_URL}/api`
+    : 'http://localhost:3000/api'
+}
+
 const serverApi = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL + '/api',
+  baseURL: getBaseURL(),
   withCredentials: true,
 })
 
